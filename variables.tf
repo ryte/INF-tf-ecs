@@ -1,11 +1,10 @@
 variable "ami_id" {}
-variable "cid" {}
 
-// variable "domain" {}
-variable "environment" {}
-
-variable "owner" {}
-variable "project" {}
+variable "tags" {
+  type = "map"
+  description = "common tags to add to the ressources"
+  default = {}
+}
 
 variable "subnet_ids_cluster" {
   type = "list"

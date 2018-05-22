@@ -1,50 +1,27 @@
 locals {
-  name   = "${var.environment}-${var.project}-ecs"
-  module = "ecs"
+  name   = "${var.tags["Environment"]}-ecs"
 }
 
 locals {
-  tags = {
-    CID         = "${var.cid}"
-    Environment = "${var.environment}"
-    Module      = "${local.module}"
-    Name        = "${local.name}"
-    Owner       = "${var.owner}"
-    Project     = "${var.project}"
-  }
+  tags = "${merge(
+    var.tags,
+    map(
+      "Module", "ecs",
+      "Name", "${local.name}"
+    )
+  )}"
 
-  asg_tags = [
-    {
-      key                 = "CID"
-      value               = "${var.cid}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Environment"
-      value               = "${var.environment}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Module"
-      value               = "${local.module}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Name"
-      value               = "${local.name}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Owner"
-      value               = "${var.owner}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Project"
-      value               = "${var.project}"
-      propagate_at_launch = true
-    },
-  ]
+}
+
+
+data "null_data_source" "asg_tags" {
+  count = "${length(keys(local.tags))}"
+
+  inputs = {
+    key                 = "${element(keys(local.tags), count.index)}"
+    value               = "${element(values(local.tags), count.index)}"
+    propagate_at_launch = true
+  }
 }
 
 locals {
