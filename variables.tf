@@ -94,3 +94,7 @@ variable "ecs_engine_auth_type" {
       https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 EOF
 }
+
+variable "datadog_api_key" {
+  default = ""
+}
