@@ -40,6 +40,10 @@
         "value": "true"
       },
       {
+        "name": "DD_TAGS",
+        "value": "squad:${squad} env:${environment} ecs"
+      },
+      {
         "name": "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL",
         "value": "true"
       },

@@ -1,5 +1,0 @@
-SHELL=/bin/bash
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO=""
-HOME=/
-*/5 * * * * root ${datadog_name}

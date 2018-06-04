@@ -44,9 +44,6 @@ data "template_file" "cloudinit" {
     list_of_registries        = "${var.ecs_engine_auth_type == "dockercfg" ? local.ecs_engine_auth_data_dockercfg : local.ecs_engine_auth_data_docker}"
     datadog_enable            = "${local.datadog_enable}"
     datadog_log_pointer_dir   = "${local.datadog_log_pointer_dir}"
-    datadog_supervisor        = "${local.datadog_supervisor}"
-    datadog_supervisor_script = "${data.template_file.supervisor.rendered}"
-    datadog_supervisor_cron   = "${data.template_file.supervisor_cron.rendered}"
   }
 }
 

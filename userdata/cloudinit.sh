@@ -17,19 +17,5 @@ ${list_of_registries}
 EOF
 
 if [ ${datadog_enable} -eq 1 ]; then
-  # this needs some time until it's possible to curl
-  start ecs
-  sudo yum install -y aws-cli jq
   mkdir -p ${datadog_log_pointer_dir}
-  instance_arn=$(curl -f http://localhost:51678/v1/metadata \
-    | jq -re .ContainerInstanceArn | awk -F/ '{print $NF}')
-
-  cat << EOF > /usr/sbin/${datadog_supervisor}
-${datadog_supervisor_script}
-EOF
-  chmod +x /usr/sbin/${datadog_supervisor}
-  cat << EOF > /etc/cron.d/${datadog_supervisor}
-${datadog_supervisor_cron}
-EOF
-  service crond restart
 fi

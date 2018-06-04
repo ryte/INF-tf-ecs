@@ -6,34 +6,14 @@ locals {
   datadog_log_pointer_dir = "/opt/datadog-agent/run/"
 }
 
-locals {
-  datadog_supervisor = "${local.datadog_name}-supervisor"
-}
-
 data "template_file" "definition" {
   template = "${file("${path.module}/datadog/definition.json")}"
 
   vars {
     datadog_name = "${local.datadog_name}"
     dd_api_key   = "${var.datadog_api_key}"
-  }
-}
-
-data "template_file" "supervisor" {
-  template = "${file("${path.module}/datadog/supervisor.sh")}"
-
-  vars {
-    cluster      = "${local.name}"
-    datadog_name = "${aws_ecs_task_definition.agent_definition.family}"
-    region       = "${data.aws_region.current.id}"
-  }
-}
-
-data "template_file" "supervisor_cron" {
-  template = "${file("${path.module}/datadog/supervisor.cron")}"
-
-  vars {
-    datadog_name = "${local.datadog_supervisor}"
+    squad        = "${var.tags["Squad"]}"
+    environment  = "${var.tags["Environment"]}"
   }
 }
 
@@ -53,7 +33,7 @@ data "aws_iam_policy_document" "agent_trust_policy" {
 
 data "aws_iam_policy_document" "agent_policy" {
   statement {
-    actions= [
+    actions = [
       "ecs:RegisterContainerInstance",
       "ecs:DeregisterContainerInstance",
       "ecs:DiscoverPollEndpoint",
@@ -67,31 +47,37 @@ data "aws_iam_policy_document" "agent_policy" {
 }
 
 resource "aws_iam_policy" "agent_policy" {
+  count  = "${local.datadog_enable}"
   name   = "${local.datadog_name}-policy"
   policy = "${data.aws_iam_policy_document.agent_policy.json}"
 }
 
 resource "aws_iam_role" "agent_role" {
+  count              = "${local.datadog_enable}"
   name               = "${local.datadog_name}-ecs"
   assume_role_policy = "${data.aws_iam_policy_document.agent_trust_policy.json}"
 }
 
 resource "aws_iam_instance_profile" "agent_profile" {
-  name = "${local.datadog_name}"
-  role = "${aws_iam_role.agent_role.name}"
+  count = "${local.datadog_enable}"
+  name  = "${local.datadog_name}"
+  role  = "${aws_iam_role.agent_role.name}"
 }
 
 resource "aws_iam_role_policy_attachment" "agent_role_default" {
+  count      = "${local.datadog_enable}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
   role       = "${aws_iam_role.agent_role.name}"
 }
 
 resource "aws_iam_role_policy_attachment" "agent_role_attachment" {
+  count      = "${local.datadog_enable}"
   policy_arn = "${aws_iam_policy.agent_policy.arn}"
   role       = "${aws_iam_role.agent_role.name}"
 }
 
 resource "aws_ecs_task_definition" "agent_definition" {
+  count      = "${local.datadog_enable}"
   depends_on = [
     "aws_iam_role.agent_role",
   ]
@@ -123,4 +109,18 @@ resource "aws_ecs_task_definition" "agent_definition" {
   requires_compatibilities = [
     "EC2",
   ]
+}
+
+resource "aws_ecs_service" "agent_service" {
+  count           = "${local.datadog_enable}"
+  name            = "${local.datadog_name}"
+  tags            = "${local.tags}"
+  cluster         = "${aws_ecs_cluster.cluster.id}"
+  task_definition = "${aws_ecs_task_definition.agent_definition.arn}"
+  desired_count   = "${var.max_size}"
+  iam_role        = "${aws_iam_role.agent_role.arn}"
+
+  placement_constraints {
+    type = "distinctInstance"
+  }
 }
