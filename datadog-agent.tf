@@ -114,7 +114,6 @@ resource "aws_ecs_task_definition" "agent_definition" {
 resource "aws_ecs_service" "agent_service" {
   count           = "${local.datadog_enable}"
   name            = "${local.datadog_name}"
-  tags            = "${local.tags}"
   cluster         = "${aws_ecs_cluster.cluster.id}"
   task_definition = "${aws_ecs_task_definition.agent_definition.arn}"
   desired_count   = "${var.max_size}"
