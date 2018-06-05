@@ -117,7 +117,6 @@ resource "aws_ecs_service" "agent_service" {
   cluster         = "${aws_ecs_cluster.cluster.id}"
   task_definition = "${aws_ecs_task_definition.agent_definition.arn}"
   desired_count   = "${var.max_size}"
-  iam_role        = "${aws_iam_role.agent_role.arn}"
 
   placement_constraints {
     type = "distinctInstance"
