@@ -35,6 +35,7 @@ data "aws_iam_policy_document" "policy_container_instance" {
       "ecs:DiscoverPollEndpoint",
       "ecs:Poll",
       "ecs:RegisterContainerInstance",
+      "ecs:StartTask",
       "ecs:StartTelemetrySession",
       "ecs:Submit*",
     ]

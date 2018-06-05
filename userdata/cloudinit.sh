@@ -15,3 +15,7 @@ ECS_RESERVED_MEMORY=64
 ${ecs_engine_auth_type}
 ${list_of_registries}
 EOF
+
+if [ ${datadog_enable} -eq 1 ]; then
+  mkdir -p ${datadog_log_pointer_dir}
+fi
