@@ -2,7 +2,7 @@
   {
     "cpu": 10,
     "essential": true,
-    "image": "datadog/agent:latest",
+    "image": "datadog/agent:6.3.0-rc.1",
     "memory": 256,
     "name": "${datadog_name}",
     "mountPoints": [
