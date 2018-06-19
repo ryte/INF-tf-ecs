@@ -6,6 +6,10 @@ output "ecs_cluster_name" {
   value = "${local.name}"
 }
 
+output "ecs_cluster_sg" {
+  value = "${aws_security_group.instance_default_sg.id}"
+}
+
 // output "alb_arn" {
 //   value = "${aws_alb.alb.arn}"
 // }
