@@ -121,4 +121,6 @@ resource "aws_ecs_service" "agent_service" {
   placement_constraints {
     type = "distinctInstance"
   }
+  deployment_maximum_percent = 100
+  deployment_minimum_healthy_percent = 0
 }
