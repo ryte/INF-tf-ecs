@@ -18,7 +18,14 @@ variable "availability_zones" {
 
 variable "alb_instance_sgs" {
   type = "list"
+  default =[]
 }
+
+variable "allow_to_sgs" {
+  type = "list"
+  default =[]
+}
+
 
 variable "instance_ssh_cidr_blocks" {
   type    = "list"

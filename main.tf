@@ -49,3 +49,13 @@ resource "aws_launch_configuration" "lc" {
   // combine alb_instance_sgs defined SGs and the default ECS instance SG for SSH access
   security_groups = ["${concat(list(aws_security_group.instance_default_sg.id), var.alb_instance_sgs)}"]
 }
+
+resource "aws_security_group_rule" "allow_service" {
+  count                    = "${length(var.allow_to_sgs)}"
+  type                     = "ingress"
+  from_port                = "${element( split(",", element( var.allow_to_sgs, count.index ) ), 1 )}"
+  to_port                  = "${element( split(",", element( var.allow_to_sgs, count.index ) ), 1 )}"
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.instance_default_sg.id}"
+  security_group_id        = "${element( split(",", element( var.allow_to_sgs, count.index ) ), 0 )}"
+}
