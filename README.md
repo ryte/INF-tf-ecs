@@ -184,17 +184,14 @@ module "ecs" {
 - `ecs_cluster_id`
     -  __description__: id of the cluster
     -  __type__: `string`
-}
 
 - `ecs_cluster_name`
     -  __description__: name of the cluster
     -  __type__: `string`
-}
 
 - `ecs_cluster_sg`
     -  __description__: security group of the cluster
     -  __type__: `string`
-}
 
 ## Authors
 
