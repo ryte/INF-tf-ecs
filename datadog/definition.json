@@ -54,6 +54,10 @@
       {
         "name": "DD_LOG_LEVEL",
         "value": "warn"
+      },
+      {
+        "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+        "value": "true"
       }
     ]
   }
