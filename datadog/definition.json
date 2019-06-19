@@ -5,6 +5,13 @@
     "image": "datadog/agent:latest",
     "memory": 256,
     "name": "${datadog_name}",
+    "portMappings": [
+      {
+          "containerPort": 8125,
+          "hostPort": 8125,
+          "protocol": "udp"
+      }
+      ],
     "mountPoints": [
       {
         "containerPath": "/var/run/docker.sock",
