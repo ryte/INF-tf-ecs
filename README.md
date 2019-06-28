@@ -200,7 +200,8 @@ module "ecs" {
 
 ## Changelog
 
-0.1.0 - Initial release.
+- 0.1.1 - Datadog-agent enabled Dogstatsd
+- 0.1.0 - Initial release.
 
 ## License
 
