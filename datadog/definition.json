@@ -14,6 +14,10 @@
       ],
     "mountPoints": [
       {
+        "containerPath": "/var/log/datadog",
+        "sourceVolume": "datadog_logs"
+      },
+      {
         "containerPath": "/var/run/docker.sock",
         "sourceVolume": "docker_sock"
       },

@@ -87,6 +87,11 @@ resource "aws_ecs_task_definition" "agent_definition" {
   network_mode          = "bridge"
 
   volume {
+    name      = "datadog_logs"
+    host_path = "/tmp/datadog-logs"
+  }
+
+  volume {
     name      = "docker_sock"
     host_path = "/var/run/docker.sock"
   }
