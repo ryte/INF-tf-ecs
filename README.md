@@ -174,7 +174,7 @@ module "ecs" {
   datadog_api_key = "${var.datadog_api_key}"
 
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  source = "git@github.com:ryte/INF-tf-ecs.git?ref=master"
+  source = "git@github.com:ryte/INF-tf-ecs.git?ref=v0.1.2"
 }
 ```
 
