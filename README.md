@@ -200,6 +200,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic
 - 0.1.1 - Datadog-agent enabled Dogstatsd
 - 0.1.0 - Initial release.
