@@ -8,7 +8,7 @@ NOTE: currently it's only possible to deploy the cluster on EC2 instances, which
 NOTE: the EC2 deployment works with a autoscaling group, so some changes are not applied to the machines until they are recreated by the ASG
 
 This project is [internal open source](https://en.wikipedia.org/wiki/Inner_source)
-and currently maintained by the [INF](https://github.com/orgs/onpage-org/teams/inf).
+and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
 ## Module Input Variables
 
@@ -174,7 +174,7 @@ module "ecs" {
   datadog_api_key = "${var.datadog_api_key}"
 
   vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  source = "git@github.com:onpage-org/INF-tf-ecs.git?ref=master"
+  source = "github.com/ryte/INF-tf-ecs.git?ref=v0.1.2"
 }
 ```
 
@@ -200,7 +200,8 @@ module "ecs" {
 
 ## Changelog
 
-- 0.1.2 - Fix Datadog-agent writing inside container
+- 0.1.3 - Fix Datadog-agent writing inside container
+- 0.1.2 - Enable Dogstatsd non_local_traffic
 - 0.1.1 - Datadog-agent enabled Dogstatsd
 - 0.1.0 - Initial release.
 
