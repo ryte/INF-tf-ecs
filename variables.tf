@@ -1,9 +1,9 @@
 variable "ami_id" {}
 
 variable "tags" {
-  type = "map"
+  type        = "map"
   description = "common tags to add to the ressources"
-  default = {}
+  default     = {}
 }
 
 variable "subnet_ids_cluster" {
@@ -17,15 +17,14 @@ variable "availability_zones" {
 }
 
 variable "alb_instance_sgs" {
-  type = "list"
-  default =[]
+  type    = "list"
+  default = []
 }
 
 variable "allow_to_sgs" {
-  type = "list"
-  default =[]
+  type    = "list"
+  default = []
 }
-
 
 variable "instance_ssh_cidr_blocks" {
   type    = "list"
@@ -38,6 +37,14 @@ variable "min_size" {}
 
 variable "instance_type" {
   default = "t2.small"
+}
+
+variable "root_volume_size" {
+  default = "20"
+}
+
+variable "root_volume_type" {
+  default = "gp2"
 }
 
 variable "instance_volume_size" {

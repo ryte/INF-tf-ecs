@@ -124,6 +124,16 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
     -  __type__: `map`
     -  __default__: {}
 
+- `root_volume_size`
+    -  __description__: the instance root device volume size
+    -  __type__: `string`
+    -  __default__: "20"
+
+- `root_volume_type`
+    -  __description__: the instance root device volume type
+    -  __type__: `string`
+    -  __default__: "gp2"              
+
 - `vpc_id`
     -  __description__: the VPC the ASG should be deployed in
     -  __type__: `string`
@@ -148,9 +158,8 @@ module "ecs" {
   desired_capacity = 3
   max_size         = 5
   min_size         = 1
-
+  root_volume_size = 20
   instance_ssh_cidr_blocks = "${var.instance_ssh_cidr_blocks}"
-
 
   allow_to_sgs = [
     "${data.terraform_remote_state.cache.authentication_redis_sg},6379"
@@ -200,6 +209,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic
 - 0.1.1 - Datadog-agent enabled Dogstatsd
