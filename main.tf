@@ -32,6 +32,12 @@ resource "aws_launch_configuration" "lc" {
     create_before_destroy = true
   }
 
+  root_block_device {
+    # encrypted   = true
+    volume_size = "${var.root_volume_size}"
+    volume_type = "${var.root_volume_type}"
+  }
+
   ebs_block_device {
     device_name = "/dev/xvdcz"
     encrypted   = true
