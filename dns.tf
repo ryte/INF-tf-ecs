@@ -13,4 +13,3 @@
 //   type    = "A"
 //   zone_id = "${data.aws_route53_zone.zone.id}"
 // }
-

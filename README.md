@@ -40,6 +40,11 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
     -  __description__: the ASG desired_capacity of the EC2 machines (number of hosts which should be running)
     -  __type__: `string`
 
+- `health_check_type`
+    -  __description__: the ASG health_check_type of the EC2 machines
+    -  __type__: `string`
+    -  __default__: "ELB"
+
 - `docker_registry_config`
     -  __description__: Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:
     1. for dockercfg:
@@ -132,7 +137,7 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 - `root_volume_type`
     -  __description__: the instance root device volume type
     -  __type__: `string`
-    -  __default__: "gp2"              
+    -  __default__: "gp2"
 
 - `vpc_id`
     -  __description__: the VPC the ASG should be deployed in
@@ -209,6 +214,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.0 - Upgrade to terraform 0.12.x
 - 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic

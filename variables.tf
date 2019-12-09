@@ -1,39 +1,51 @@
-variable "ami_id" {}
+variable "ami_id" {
+}
 
 variable "tags" {
-  type        = "map"
+  type        = map(string)
   description = "common tags to add to the ressources"
   default     = {}
 }
 
 variable "subnet_ids_cluster" {
-  type = "list"
+  type = list(string)
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+}
 
 variable "availability_zones" {
   default = ["a", "b", "c"]
 }
 
 variable "alb_instance_sgs" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "allow_to_sgs" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "instance_ssh_cidr_blocks" {
-  type    = "list"
+  type    = list(string)
   default = ["0.0.0.0/0"]
 }
 
-variable "desired_capacity" {}
-variable "max_size" {}
-variable "min_size" {}
+variable "desired_capacity" {
+}
+
+variable "health_check_type" {
+  type = "string"
+  default = "ELB"
+}
+
+variable "max_size" {
+}
+
+variable "min_size" {
+}
 
 variable "instance_type" {
   default = "t2.small"
@@ -60,7 +72,11 @@ variable "ssh_key_name" {
 }
 
 variable "instance_tags" {
-  type    = "list"
+  type    = list(object({
+    key = string
+    value = string
+    propagate_at_launch = bool
+    }))
   default = []
 
   description = <<DOC
@@ -77,10 +93,11 @@ This must be a list like this
     propagate_at_launch = true
   }]
 DOC
+
 }
 
 variable "docker_registry_config" {
-  type    = "map"
+  type    = map(string)
   default = {}
 
   description = <<EOF
@@ -94,6 +111,7 @@ variable "docker_registry_config" {
     see:
       https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 EOF
+
 }
 
 variable "ecs_engine_auth_type" {
@@ -107,6 +125,7 @@ variable "ecs_engine_auth_type" {
     See:
       https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 EOF
+
 }
 
 variable "datadog_api_key" {

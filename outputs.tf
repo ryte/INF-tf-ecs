@@ -1,13 +1,13 @@
 output "ecs_cluster_id" {
-  value = "${aws_ecs_cluster.cluster.id}"
+  value = aws_ecs_cluster.cluster.id
 }
 
 output "ecs_cluster_name" {
-  value = "${local.name}"
+  value = local.name
 }
 
 output "ecs_cluster_sg" {
-  value = "${aws_security_group.instance_default_sg.id}"
+  value = aws_security_group.instance_default_sg.id
 }
 
 // output "alb_arn" {
@@ -20,4 +20,3 @@ output "ecs_cluster_sg" {
 //     "${aws_alb_listener.https.arn}",
 //   ]
 // }
-
