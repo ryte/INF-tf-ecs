@@ -37,7 +37,7 @@ variable "desired_capacity" {
 }
 
 variable "health_check_type" {
-  type = "string"
+  type = string
   default = "ELB"
 }
 
