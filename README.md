@@ -40,6 +40,11 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
     -  __description__: the ASG desired_capacity of the EC2 machines (number of hosts which should be running)
     -  __type__: `string`
 
+- `health_check_type`
+    -  __description__: the ASG health_check_type of the EC2 machines
+    -  __type__: `string`
+    -  __default__: "ELB"
+
 - `docker_registry_config`
     -  __description__: Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:
     1. for dockercfg:
@@ -132,7 +137,7 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 - `root_volume_type`
     -  __description__: the instance root device volume type
     -  __type__: `string`
-    -  __default__: "gp2"              
+    -  __default__: "gp2"
 
 - `vpc_id`
     -  __description__: the VPC the ASG should be deployed in
@@ -146,26 +151,23 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
 ```hcl
 module "ecs" {
-  ami_id = "${data.terraform_remote_state.ami.ecs_optimized}"
-  tags   = "${local.common_tags}"
+  ami_id = data.terraform_remote_state.ami.ecs_optimized
+  tags   = local.common_tags
 
-  subnet_ids_cluster = [
-    "${data.terraform_remote_state.vpc.subnet_private}",
-  ]
+  subnet_ids_cluster = data.terraform_remote_state.vpc.subnet_private
 
-  // instance_type    = "${var.instance_type}"
   instance_type    = "t2.medium"
   desired_capacity = 3
   max_size         = 5
   min_size         = 1
   root_volume_size = 20
-  instance_ssh_cidr_blocks = "${var.instance_ssh_cidr_blocks}"
+  instance_ssh_cidr_blocks = var.instance_ssh_cidr_blocks
 
   allow_to_sgs = [
     "${data.terraform_remote_state.cache.authentication_redis_sg},6379"
   ]
 
-  ssh_key_name = "${var.ssh_key_name}"
+  ssh_key_name = var.ssh_key_name
 
   // set tag for SSH key deployment via SSM
   instance_tags = [{
@@ -180,10 +182,10 @@ module "ecs" {
     "ryte-docker.jfrog.io" = "<token>,<user>"
   }
 
-  datadog_api_key = "${var.datadog_api_key}"
+  datadog_api_key = var.datadog_api_key
 
-  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  source = "github.com/ryte/INF-tf-ecs.git?ref=v0.1.2"
+  vpc_id = data.terraform_remote_state.vpc.vpc_id
+  source = "github.com/ryte/INF-tf-ecs?ref=v0.2.0"
 }
 ```
 
@@ -209,6 +211,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.0 - Upgrade to terraform 0.12.x
 - 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic
