@@ -151,26 +151,23 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
 ```hcl
 module "ecs" {
-  ami_id = "${data.terraform_remote_state.ami.ecs_optimized}"
-  tags   = "${local.common_tags}"
+  ami_id = data.terraform_remote_state.ami.ecs_optimized
+  tags   = local.common_tags
 
-  subnet_ids_cluster = [
-    "${data.terraform_remote_state.vpc.subnet_private}",
-  ]
+  subnet_ids_cluster = data.terraform_remote_state.vpc.subnet_private
 
-  // instance_type    = "${var.instance_type}"
   instance_type    = "t2.medium"
   desired_capacity = 3
   max_size         = 5
   min_size         = 1
   root_volume_size = 20
-  instance_ssh_cidr_blocks = "${var.instance_ssh_cidr_blocks}"
+  instance_ssh_cidr_blocks = var.instance_ssh_cidr_blocks
 
   allow_to_sgs = [
     "${data.terraform_remote_state.cache.authentication_redis_sg},6379"
   ]
 
-  ssh_key_name = "${var.ssh_key_name}"
+  ssh_key_name = var.ssh_key_name
 
   // set tag for SSH key deployment via SSM
   instance_tags = [{
@@ -185,10 +182,10 @@ module "ecs" {
     "ryte-docker.jfrog.io" = "<token>,<user>"
   }
 
-  datadog_api_key = "${var.datadog_api_key}"
+  datadog_api_key = var.datadog_api_key
 
-  vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
-  source = "github.com/ryte/INF-tf-ecs.git?ref=v0.1.2"
+  vpc_id = data.terraform_remote_state.vpc.vpc_id
+  source = "github.com/ryte/INF-tf-ecs?ref=v0.2.0"
 }
 ```
 
