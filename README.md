@@ -185,7 +185,7 @@ module "ecs" {
   datadog_api_key = var.datadog_api_key
 
   vpc_id = data.terraform_remote_state.vpc.vpc_id
-  source = "github.com/ryte/INF-tf-ecs?ref=v0.2.0"
+  source = "github.com/ryte/INF-tf-ecs?ref=v0.2.1"
 }
 ```
 
@@ -211,7 +211,9 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.1 - Remove redis-cli from ECS hosts
 - 0.2.0 - Upgrade to terraform 0.12.x
+- 0.1.5 - Remove redis-cli from ECS hosts (backport)
 - 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic
