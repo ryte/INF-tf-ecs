@@ -1,10 +1,5 @@
 #!/bin/bash +ex
 
-cd /tmp
-sudo yum install -y gcc
-wget http://download.redis.io/redis-stable.tar.gz && tar xvzf redis-stable.tar.gz && cd redis-stable && make && sudo cp src/redis-cli /usr/bin/ && sudo chmod 755 /usr/bin/redis-cli
-
-
 sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
 sudo start amazon-ssm-agent
 
