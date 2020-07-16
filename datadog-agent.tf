@@ -1,7 +1,8 @@
 locals {
   # even if it might be obvious for most people:
   # do not reword the content of these variables
-  datadog_enable          = "${length(var.datadog_api_key) > 0 ? 1 : 0}"
+  datadog_enable = "${length(var.datadog_api_key) > 0 ? 1 : 0}"
+
   datadog_name            = "datadog-agent"
   datadog_log_pointer_dir = "/opt/datadog-agent/run/"
 }
@@ -22,10 +23,12 @@ data "aws_iam_policy_document" "agent_trust_policy" {
     actions = [
       "sts:AssumeRole",
     ]
+
     principals {
       identifiers = [
         "ec2.amazonaws.com",
       ]
+
       type = "Service"
     }
   }
@@ -40,8 +43,9 @@ data "aws_iam_policy_document" "agent_policy" {
       "ecs:Submit*",
       "ecs:Poll",
       "ecs:StartTask",
-      "ecs:StartTelemetrySession"
-    ],
+      "ecs:StartTelemetrySession",
+    ]
+
     resources = ["*"]
   }
 }
@@ -77,7 +81,8 @@ resource "aws_iam_role_policy_attachment" "agent_role_attachment" {
 }
 
 resource "aws_ecs_task_definition" "agent_definition" {
-  count      = "${local.datadog_enable}"
+  count = "${local.datadog_enable}"
+
   depends_on = [
     "aws_iam_role.agent_role",
   ]
@@ -111,6 +116,11 @@ resource "aws_ecs_task_definition" "agent_definition" {
     host_path = "${local.datadog_log_pointer_dir}"
   }
 
+  volume {
+    name      = "passwd"
+    host_path = "/etc/passwd"
+  }
+
   requires_compatibilities = [
     "EC2",
   ]
@@ -126,6 +136,7 @@ resource "aws_ecs_service" "agent_service" {
   placement_constraints {
     type = "distinctInstance"
   }
-  deployment_maximum_percent = 100
+
+  deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0
 }
