@@ -211,6 +211,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.2 - Datadog enriched live containers view with process list
 - 0.2.1 - Remove redis-cli from ECS hosts
 - 0.2.0 - Upgrade to terraform 0.12.x
 - 0.1.5 - Remove redis-cli from ECS hosts (backport)
