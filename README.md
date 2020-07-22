@@ -209,6 +209,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.1.5 - Datadog enriched live containers view with process list
 - 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
 - 0.1.2 - Enable Dogstatsd non_local_traffic

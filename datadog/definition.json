@@ -35,6 +35,11 @@
         "containerPath": "/opt/datadog-agent/run",
         "sourceVolume": "log_pointer",
         "readOnly": false
+      },
+      {
+        "containerPath": "/etc/passwd",
+        "sourceVolume": "passwd",
+        "readOnly": true
       }
     ],
     "environment": [
@@ -68,6 +73,10 @@
       },
       {
         "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+        "value": "true"
+      },
+      {
+        "name": "DD_PROCESS_AGENT_ENABLED",
         "value": "true"
       }
     ]
