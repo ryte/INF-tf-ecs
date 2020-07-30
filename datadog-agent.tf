@@ -109,6 +109,11 @@ resource "aws_ecs_task_definition" "agent_definition" {
     host_path = local.datadog_log_pointer_dir
   }
 
+  volume {
+    name      = "passwd"
+    host_path = "/etc/passwd"
+  }
+
   requires_compatibilities = [
     "EC2",
   ]
@@ -127,4 +132,3 @@ resource "aws_ecs_service" "agent_service" {
   deployment_maximum_percent         = 100
   deployment_minimum_healthy_percent = 0
 }
-
