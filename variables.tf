@@ -131,3 +131,9 @@ EOF
 variable "datadog_api_key" {
   default = ""
 }
+
+variable "environment" {
+}
+
+variable "squad" {
+}

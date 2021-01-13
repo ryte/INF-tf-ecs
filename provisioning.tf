@@ -121,4 +121,3 @@ resource "aws_ssm_association" "setup" {
     values = [local.name]
   }
 }
-

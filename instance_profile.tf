@@ -69,6 +69,7 @@ resource "aws_iam_policy" "policy_container_instance" {
 resource "aws_iam_role" "role_container_instance" {
   assume_role_policy = data.aws_iam_policy_document.trust_policy_container_instance.json
   name               = "${local.name}-container_instance"
+  tags               = local.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ssm" {

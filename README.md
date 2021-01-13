@@ -40,6 +40,10 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
     -  __description__: the ASG desired_capacity of the EC2 machines (number of hosts which should be running)
     -  __type__: `string`
 
+- `environment`
+    -  __description__: the environment this cluster is running in (e.g. 'testing')
+    -  __type__: `string`
+
 - `health_check_type`
     -  __description__: the ASG health_check_type of the EC2 machines
     -  __type__: `string`
@@ -115,6 +119,10 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
     -  __description__: the ASG min_size of the EC2 machines
     -  __type__: `string`
 
+- `squad`
+    -  __description__: the owner of this cluster
+    -  __type__: `string`
+
 - `ssh_key_name`
     -  __description__: the ssh_key_name which is used as the EC2 Key Name
     -  __type__: `string`
@@ -151,8 +159,12 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
 ```hcl
 module "ecs" {
+  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.1"
+  tags        = local.common_tags
+  environment = var.environment
+  squad       = var.squad
+
   ami_id = data.terraform_remote_state.ami.ecs_optimized
-  tags   = local.common_tags
 
   subnet_ids_cluster = data.terraform_remote_state.vpc.subnet_private
 
@@ -185,7 +197,6 @@ module "ecs" {
   datadog_api_key = var.datadog_api_key
 
   vpc_id = data.terraform_remote_state.vpc.vpc_id
-  source = "github.com/ryte/INF-tf-ecs?ref=v0.2.1"
 }
 ```
 
@@ -211,6 +222,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.3 - Add variable `environment` and `squad` instead of reading from tags
 - 0.2.2 - Datadog enriched live containers view with process list
 - 0.2.1 - Remove redis-cli from ECS hosts
 - 0.2.0 - Upgrade to terraform 0.12.x
@@ -222,6 +234,5 @@ module "ecs" {
 - 0.1.0 - Initial release.
 
 ## License
-
 
 This software is released under the MIT License (see `LICENSE`).
