@@ -12,8 +12,8 @@ data "template_file" "definition" {
   vars = {
     datadog_name = local.datadog_name
     dd_api_key   = var.datadog_api_key
-    squad        = var.tags["Squad"]
-    environment  = var.tags["Environment"]
+    squad        = var.squad
+    environment  = var.environment
   }
 }
 
@@ -56,6 +56,7 @@ resource "aws_iam_role" "agent_role" {
   count              = local.datadog_enable
   name               = "${local.datadog_name}-ecs"
   assume_role_policy = data.aws_iam_policy_document.agent_trust_policy.json
+  tags               = local.tags
 }
 
 resource "aws_iam_instance_profile" "agent_profile" {
@@ -79,6 +80,7 @@ resource "aws_iam_role_policy_attachment" "agent_role_attachment" {
 resource "aws_ecs_task_definition" "agent_definition" {
   count      = local.datadog_enable
   depends_on = [aws_iam_role.agent_role]
+  tags       = merge(local.tags, {type = "operations"})
 
   container_definitions = data.template_file.definition.rendered
   family                = local.datadog_name
@@ -122,6 +124,7 @@ resource "aws_ecs_task_definition" "agent_definition" {
 resource "aws_ecs_service" "agent_service" {
   count           = local.datadog_enable
   name            = local.datadog_name
+  tags            = merge(local.tags, {type = "operations"})
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.agent_definition[0].arn
   desired_count   = var.max_size

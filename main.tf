@@ -5,6 +5,7 @@ resource "aws_ecs_cluster" "cluster" {
   depends_on = [aws_cloudwatch_log_group.log_group]
 
   name = local.name
+  tags = merge(local.tags, {type = "operations"})
 }
 
 resource "aws_autoscaling_group" "asg" {
@@ -66,4 +67,3 @@ resource "aws_security_group_rule" "allow_service" {
   source_security_group_id = aws_security_group.instance_default_sg.id
   security_group_id        = element(split(",", element(var.allow_to_sgs, count.index)), 0)
 }
-

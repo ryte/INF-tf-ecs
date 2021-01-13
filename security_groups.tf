@@ -6,12 +6,6 @@ resource "aws_security_group" "instance_default_sg" {
     cidr_blocks = var.instance_ssh_cidr_blocks
   }
 
-  tags = merge(
-    local.tags,
-    {
-      "Role" = "instance"
-    },
-  )
+  tags = merge(local.tags, {Role = "instance"})
   vpc_id = var.vpc_id
 }
-

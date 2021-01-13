@@ -1,5 +1,5 @@
 locals {
-  name = "${var.tags["Environment"]}-ecs"
+  name = "${var.environment}-ecs"
 }
 
 locals {
@@ -35,4 +35,3 @@ locals {
     "",
   )}}" : ""
 }
-
