@@ -1,8 +1,6 @@
 locals {
   name = "${var.environment}-ecs"
-}
 
-locals {
   tags = merge(
     var.tags,
     {
@@ -10,16 +8,14 @@ locals {
       "Name"   = local.name
     },
   )
-}
 
-data "null_data_source" "asg_tags" {
-  count = length(keys(local.tags))
-
-  inputs = {
-    key                 = element(keys(local.tags), count.index)
-    value               = element(values(local.tags), count.index)
+  asg_tags = [ for k, v in local.tags:
+  {
+    key                 = k
+    value               = v
     propagate_at_launch = true
   }
+  ]
 }
 
 locals {
