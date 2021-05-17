@@ -159,7 +159,7 @@ and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
 ```hcl
 module "ecs" {
-  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.1"
+  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.4"
   tags        = local.common_tags
   environment = var.environment
   squad       = var.squad
@@ -222,6 +222,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.4 - Removed deprecated `null_data_source`
 - 0.2.3 - Add variable `environment` and `squad` instead of reading from tags
 - 0.2.2 - Datadog enriched live containers view with process list
 - 0.2.1 - Remove redis-cli from ECS hosts

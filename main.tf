@@ -22,7 +22,7 @@ resource "aws_autoscaling_group" "asg" {
   launch_configuration = aws_launch_configuration.lc.name
   min_elb_capacity     = 0
   name                 = "${local.name}-asg"
-  tags                 = concat(data.null_data_source.asg_tags.*.outputs, var.instance_tags)
+  tags                 = concat(local.asg_tags, var.instance_tags)
   vpc_zone_identifier  = var.subnet_ids_cluster
 }
 
