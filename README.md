@@ -10,151 +10,269 @@ NOTE: the EC2 deployment works with a autoscaling group, so some changes are not
 This project is [internal open source](https://en.wikipedia.org/wiki/Inner_source)
 and currently maintained by the [INF](https://github.com/orgs/ryte/teams/inf).
 
-## Module Input Variables
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
 
-- `alb_instance_sgs`
-    -  __description__: SGs which are beeing added to the instances (DEPRECATED, use allow_to_sgs from now on)
-    -  __type__: `list`
-    -  __default__: []
+The following requirements are needed by this module:
 
-- `allow_to_sgs`
-    -  __description__: a new rule is beeing added to the provided list of security groups which allows the EC2 instances access to a specififed port, e.G. : `["${var.sg_name},6379"]`
-    -  __type__: `list`
-    -  __default__: []
+- terraform (>= 0.12)
 
-- `ami_id`
-    -  __description__: 'the ami id to use for the instances'
-    -  __type__: `string`
+## Providers
 
-- `availability_zones`
-    -  __description__: not beeing used, will be removed with the next version
-    -  __type__: `string`
-    -  __default__: ["a", "b", "c"]
+The following providers are used by this module:
 
-- `datadog_api_key`
-    -  __description__: if the datadog_api_key variable is set a single datadog agent task definition is deployed on every EC2 machine for metrics and log gathering
-    -  __type__: `string`
-    -  __default__: ""
+- aws
 
-- `desired_capacity`
-    -  __description__: the ASG desired_capacity of the EC2 machines (number of hosts which should be running)
-    -  __type__: `string`
+- template
 
-- `environment`
-    -  __description__: the environment this cluster is running in (e.g. 'testing')
-    -  __type__: `string`
+## Required Inputs
 
-- `health_check_type`
-    -  __description__: the ASG health_check_type of the EC2 machines
-    -  __type__: `string`
-    -  __default__: "ELB"
+The following input variables are required:
 
-- `docker_registry_config`
-    -  __description__: Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:
+### ami\_id
+
+Description: 'the ami id to use for the instances'
+
+Type: `string`
+
+### desired\_capacity
+
+Description: the ASG desired\_capacity of the EC2 machines (number of hosts which should be running)
+
+Type: `string`
+
+### environment
+
+Description: the environment this cluster is running in (e.g. 'testing')
+
+Type: `string`
+
+### max\_size
+
+Description: the ASG max\_size of the EC2 machines
+
+Type: `string`
+
+### min\_size
+
+Description: the ASG min\_size of the EC2 machines
+
+Type: `string`
+
+### squad
+
+Description: the owner of this cluster
+
+Type: `string`
+
+### subnet\_ids\_cluster
+
+Description: a list of subnet ids in which the ASG deploys to
+
+Type: `list(string)`
+
+### vpc\_id
+
+Description: the VPC the ASG should be deployed in
+
+Type: `string`
+
+## Optional Inputs
+
+The following input variables are optional (have default values):
+
+### alb\_instance\_sgs
+
+Description: SGs which are beeing added to the instances (DEPRECATED, use allow\_to\_sgs from now on)
+
+Type: `list(string)`
+
+Default: `[]`
+
+### allow\_to\_sgs
+
+Description:   a new rule is beeing added to the provided list of security groups which allows the EC2 instances access to a specififed port, e.G. : `["${var.sg_name},6379"]`
+
+Type: `list(string)`
+
+Default: `[]`
+
+### availability\_zones
+
+Description: unused (DEPRECATED)
+
+Type: `list`
+
+Default:
+
+```json
+[
+  "a",
+  "b",
+  "c"
+]
+```
+
+### datadog\_api\_key
+
+Description: if the datadog\_api\_key variable is set a single datadog agent task definition is deployed on every EC2 machine for metrics and log gathering
+
+Type: `string`
+
+Default: `""`
+
+### docker\_registry\_config
+
+Description:     Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:  
     1. for dockercfg:
-      "repository" = "auth,email"
+      "repository" = "auth,email"  
     1. for docker
-      "repository" = "username,password,email"
+      "repository" = "username,password,email"  
     1. for jfrog
       "repository" = "token,username"
 
     see: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 
-    -  __type__: `map`
-    -  __default__: {}
+Type: `map(string)`
 
-- `ecs_engine_auth_type`
-    -  __description__: Set Docker registry authentication type information used by ECS. Valid values are:
-        - "dockercfg"
-        - "docker"
+Default: `{}`
 
-    See: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
+### ecs\_engine\_auth\_type
 
-    -  __type__: `string`
-    -  __default__: ""
+Description:     Set Docker registry authentication type information used by ECS. Valid values are:
+      - dockercfg
+      - docker
+      - jfrog
 
-- `instance_ssh_cidr_blocks`
-    -  __description__: a list of CIDR blocks which are allowed ssh access, since it's internal no restriction is needed
-    -  __type__: `list`
-    -  __default__: ["0.0.0.0/0"]
+    See:  
+      https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 
-- `instance_tags`
-    -  __description__: Tags to be added only to EC2 instances part of the cluster, used for SSH key deployment
-    ```
-    [{
-        key                 = "InstallCW"
-        value               = "true"
-        propagate_at_launch = true
-    },
-    {
-        key                 = "test"
-        value               = "Test2"
-        propagate_at_launch = true
-    }]
-    ```
+Type: `string`
 
-    -  __type__: `list`
-    -  __default__: []
+Default: `""`
 
-- `instance_type`
-    -  __description__: the EC2 instance type which shuld be spawend
-    -  __type__: `string`
-    -  __default__: "t2.small"
+### health\_check\_type
 
-- `instance_volume_size`
-    -  __description__: the instance volume size
-    -  __type__: `string`
-    -  __default__: "64"
+Description: the ASG health\_check\_type of the EC2 machines
 
-- `instance_volume_type`
-    -  __description__: the instance volume type
-    -  __type__: `string`
-    -  __default__: "gp2"
+Type: `string`
 
-- `max_size`
-    -  __description__: the ASG max_size of the EC2 machines
-    -  __type__: `string`
+Default: `"ELB"`
 
-- `min_size`
-    -  __description__: the ASG min_size of the EC2 machines
-    -  __type__: `string`
+### instance\_ssh\_cidr\_blocks
 
-- `squad`
-    -  __description__: the owner of this cluster
-    -  __type__: `string`
+Description: a list of CIDR blocks which are allowed ssh access, since it's internal no restriction is needed
 
-- `ssh_key_name`
-    -  __description__: the ssh_key_name which is used as the EC2 Key Name
-    -  __type__: `string`
-    -  __default__: ""
+Type: `list(string)`
 
-- `subnet_ids_cluster`
-    -  __description__: a list of subnet ids in which the ASG deploys to
-    -  __type__: `list`
+Default:
 
-- `tags`
-    -  __description__: a map of tags which is added to all supporting ressources
-    -  __type__: `map`
-    -  __default__: {}
+```json
+[
+  "0.0.0.0/0"
+]
+```
 
-- `root_volume_size`
-    -  __description__: the instance root device volume size
-    -  __type__: `string`
-    -  __default__: "20"
+### instance\_tags
 
-- `root_volume_type`
-    -  __description__: the instance root device volume type
-    -  __type__: `string`
-    -  __default__: "gp2"
+Description: Tags to be added to each EC2 instances part of the cluster.  
+This must be a list like this
+ [{  
+    key                 = "InstallCW"  
+    value               = "true"  
+    propagate\_at\_launch = true
+  },
+  {  
+    key                 = "test"  
+    value               = "Test2"  
+    propagate\_at\_launch = true
+  }]
 
-- `vpc_id`
-    -  __description__: the VPC the ASG should be deployed in
-    -  __type__: `string`
+Type:
 
+```hcl
+list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
+```
 
+Default: `[]`
 
+### instance\_type
 
+Description: the EC2 instance type which shuld be spawend
 
+Type: `string`
+
+Default: `"t2.small"`
+
+### instance\_volume\_size
+
+Description: the instance volume size
+
+Type: `string`
+
+Default: `"64"`
+
+### instance\_volume\_type
+
+Description: the instance volume type
+
+Type: `string`
+
+Default: `"gp2"`
+
+### root\_volume\_size
+
+Description: the instance root device volume size
+
+Type: `string`
+
+Default: `"20"`
+
+### root\_volume\_type
+
+Description: the instance root device volume type
+
+Type: `string`
+
+Default: `"gp2"`
+
+### ssh\_key\_name
+
+Description: the ssh\_key\_name which is used as the EC2 Key Name
+
+Type: `string`
+
+Default: `""`
+
+### tags
+
+Description: common tags to add to the ressources
+
+Type: `map(string)`
+
+Default: `{}`
+
+## Outputs
+
+The following outputs are exported:
+
+### ecs\_cluster\_id
+
+Description: id of the cluster
+
+### ecs\_cluster\_name
+
+Description: name of the cluster
+
+### ecs\_cluster\_sg
+
+Description: security group of the cluster
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Usage
 
 ```hcl
@@ -200,21 +318,6 @@ module "ecs" {
 }
 ```
 
-
-## Outputs
-
-- `ecs_cluster_id`
-    -  __description__: id of the cluster
-    -  __type__: `string`
-
-- `ecs_cluster_name`
-    -  __description__: name of the cluster
-    -  __type__: `string`
-
-- `ecs_cluster_sg`
-    -  __description__: security group of the cluster
-    -  __type__: `string`
-
 ## Authors
 
 - [Armin Grodon](https://github.com/x4121)
@@ -230,7 +333,7 @@ module "ecs" {
 - 0.1.5 - Remove redis-cli from ECS hosts (backport)
 - 0.1.4 - Extend root block device
 - 0.1.3 - Fix Datadog-agent writing inside container
-- 0.1.2 - Enable Dogstatsd non_local_traffic
+- 0.1.2 - Enable Dogstatsd non\_local\_traffic
 - 0.1.1 - Datadog-agent enabled Dogstatsd
 - 0.1.0 - Initial release.
 

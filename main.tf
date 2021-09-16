@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "cluster" {
   depends_on = [aws_cloudwatch_log_group.log_group]
 
   name = local.name
-  tags = merge(local.tags, {type = "operations"})
+  tags = merge(local.tags, { type = "operations" })
 }
 
 resource "aws_autoscaling_group" "asg" {

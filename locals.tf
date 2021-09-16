@@ -9,12 +9,12 @@ locals {
     },
   )
 
-  asg_tags = [ for k, v in local.tags:
-  {
-    key                 = k
-    value               = v
-    propagate_at_launch = true
-  }
+  asg_tags = [for k, v in local.tags :
+    {
+      key                 = k
+      value               = v
+      propagate_at_launch = true
+    }
   ]
 }
 

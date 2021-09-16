@@ -50,7 +50,7 @@ log_stream_name = $cluster/var/log/ecs/audit.log/$container_instance_id
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 EOF
 
-# overwrite AWS CloudWatch Logs location 
+# overwrite AWS CloudWatch Logs location
 sed -i "s/region = us-east-1/region = ${aws_region}/" /etc/awslogs/awscli.conf
 service awslogs restart
 

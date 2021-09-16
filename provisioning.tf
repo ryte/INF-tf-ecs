@@ -99,7 +99,7 @@ resource "aws_ssm_association" "setup" {
   }
 
   targets {
-    key = "tag:Name"
+    key    = "tag:Name"
     values = [local.name]
   }
 }
