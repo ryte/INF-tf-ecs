@@ -277,7 +277,7 @@ Description: security group of the cluster
 
 ```hcl
 module "ecs" {
-  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.5"
+  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.6"
   tags        = local.common_tags
   environment = var.environment
   squad       = var.squad
@@ -325,6 +325,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.6 - Enable AWS ECS metadata file
 - 0.2.5 - Enable Datadog to collect APM logs
 - 0.2.4 - Removed deprecated `null_data_source`
 - 0.2.3 - Add variable `environment` and `squad` instead of reading from tags

@@ -7,6 +7,7 @@ sudo start amazon-ssm-agent
 cat << EOF > /etc/ecs/ecs.config
 ECS_CLUSTER=${cluster_name}
 ECS_RESERVED_MEMORY=64
+ECS_ENABLE_CONTAINER_METADATA=true
 ${ecs_engine_auth_type}
 ${list_of_registries}
 EOF
