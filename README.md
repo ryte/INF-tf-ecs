@@ -123,11 +123,11 @@ Default: `""`
 
 ### docker\_registry\_config
 
-Description:     Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:  
+Description:     Set Docker registry authentication information used by ECS. In dependendcy of `ecs_engine_auth_type` set this map like:
     1. for dockercfg:
-      "repository" = "auth,email"  
+      "repository" = "auth,email"
     1. for docker
-      "repository" = "username,password,email"  
+      "repository" = "username,password,email"
     1. for jfrog
       "repository" = "token,username"
 
@@ -144,7 +144,7 @@ Description:     Set Docker registry authentication type information used by ECS
       - docker
       - jfrog
 
-    See:  
+    See:
       https://docs.aws.amazon.com/AmazonECS/latest/developerguide/private-auth.html
 
 Type: `string`
@@ -175,16 +175,16 @@ Default:
 
 ### instance\_tags
 
-Description: Tags to be added to each EC2 instances part of the cluster.  
+Description: Tags to be added to each EC2 instances part of the cluster.
 This must be a list like this
- [{  
-    key                 = "InstallCW"  
-    value               = "true"  
+ [{
+    key                 = "InstallCW"
+    value               = "true"
     propagate\_at\_launch = true
   },
-  {  
-    key                 = "test"  
-    value               = "Test2"  
+  {
+    key                 = "test"
+    value               = "Test2"
     propagate\_at\_launch = true
   }]
 
@@ -277,7 +277,7 @@ Description: security group of the cluster
 
 ```hcl
 module "ecs" {
-  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.4"
+  source      = "github.com/ryte/INF-tf-ecs?ref=v0.2.5"
   tags        = local.common_tags
   environment = var.environment
   squad       = var.squad
@@ -325,6 +325,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.5 - Enable Datadog to collect APM logs
 - 0.2.4 - Removed deprecated `null_data_source`
 - 0.2.3 - Add variable `environment` and `squad` instead of reading from tags
 - 0.2.2 - Datadog enriched live containers view with process list
