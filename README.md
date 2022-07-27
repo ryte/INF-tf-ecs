@@ -272,6 +272,14 @@ Description: name of the cluster
 
 Description: security group of the cluster
 
+### log\_retention
+
+Description: Log retention in days
+
+Type: `number`
+
+Default: `30`
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Usage
 

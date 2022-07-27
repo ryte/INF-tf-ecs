@@ -95,6 +95,11 @@ variable "ssh_key_name" {
   default     = ""
 }
 
+variable "log_retention" {
+  description = "Log retention in Days"
+  default     = 30
+}
+
 variable "instance_tags" {
   type = list(object({
     key                 = string
