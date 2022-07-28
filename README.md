@@ -272,6 +272,14 @@ Description: name of the cluster
 
 Description: security group of the cluster
 
+### log\_retention
+
+Description: Log retention in days
+
+Type: `number`
+
+Default: `30`
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Usage
 
@@ -325,6 +333,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.7 - Add custom value for log retention
 - 0.2.6 - Enable AWS ECS metadata file
 - 0.2.5 - Enable Datadog to collect APM logs
 - 0.2.4 - Removed deprecated `null_data_source`
