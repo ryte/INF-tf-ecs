@@ -333,6 +333,7 @@ module "ecs" {
 
 ## Changelog
 
+- 0.2.7 - Add custom value for log retention
 - 0.2.6 - Enable AWS ECS metadata file
 - 0.2.5 - Enable Datadog to collect APM logs
 - 0.2.4 - Removed deprecated `null_data_source`
